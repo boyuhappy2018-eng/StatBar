@@ -3,6 +3,10 @@ import CHIDBridge
 import Combine
 import SwiftUI
 
+private extension Notification.Name {
+    static let statBarShowDashboard = Notification.Name("com.statbar.app.show-dashboard")
+}
+
 @MainActor
 private final class StatusMetricsView: NSView {
     var temperature = "—°" { didSet { needsDisplay = true } }
@@ -102,6 +106,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
             return
         }
+
+        // The build product and the installed app share a bundle identifier. Without
+        // this guard, opening both creates two independent menu-bar monitors.
+        if let bundleIdentifier = Bundle.main.bundleIdentifier,
+           let runningInstance = NSRunningApplication
+            .runningApplications(withBundleIdentifier: bundleIdentifier)
+            .first(where: { $0.processIdentifier != ProcessInfo.processInfo.processIdentifier }) {
+            DistributedNotificationCenter.default().post(
+                name: .statBarShowDashboard,
+                object: bundleIdentifier,
+                userInfo: nil
+            )
+            runningInstance.activate(options: [])
+            return
+        }
+
         let app = NSApplication.shared
         let delegate = AppDelegate()
         app.delegate = delegate
@@ -110,6 +130,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        DistributedNotificationCenter.default().addObserver(
+            self,
+            selector: #selector(revealExistingInstance(_:)),
+            name: .statBarShowDashboard,
+            object: Bundle.main.bundleIdentifier
+        )
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
             statusItem.length = 84
@@ -182,6 +208,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func restoreFans() { fanController.restoreAutomatic() }
     @objc private func quit() { NSApplication.shared.terminate(nil) }
+    @objc private func revealExistingInstance(_ notification: Notification) { showDashboardWindow() }
 
     private func updateStatusItem() {
         guard let button = statusItem.button else { return }
