@@ -1,0 +1,15 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  swift-build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build StatBar
+        run: swift build -c release --product StatBar
+      - name: Build privileged helper
+        run: swift build -c release --product StatBarSMCHelper

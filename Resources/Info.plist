@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key><string>en</string>
+    <key>CFBundleExecutable</key><string>StatBar</string>
+    <key>CFBundleIdentifier</key><string>com.statbar.app</string>
+    <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
+    <key>CFBundleName</key><string>StatBar</string>
+    <key>CFBundleDisplayName</key><string>StatBar</string>
+    <key>CFBundleIconFile</key><string>AppIcon</string>
+    <key>CFBundlePackageType</key><string>APPL</string>
+    <key>CFBundleShortVersionString</key><string>1.0.0</string>
+    <key>CFBundleVersion</key><string>2</string>
+    <key>LSMinimumSystemVersion</key><string>14.0</string>
+    <key>LSUIElement</key><true/>
+    <key>NSHighResolutionCapable</key><true/>
+    <key>NSCalendarsFullAccessUsageDescription</key><string>StatBar uses calendar access to show upcoming events in the Time panel.</string>
+    <key>NSLocationWhenInUseUsageDescription</key><string>Location access is used only to identify the current Wi-Fi network. Weather location is configured manually.</string>
+    <key>NSHumanReadableCopyright</key><string>StatBar 1.0 · AppleSMC transport includes MIT-licensed Stats work.</string>
+</dict>
+</plist>
